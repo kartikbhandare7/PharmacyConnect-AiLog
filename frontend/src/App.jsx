@@ -6,16 +6,7 @@ import AppLayout from './components/layout/AppLayout'
 import ProtectedRoute from './components/ui/ProtectedRoute'
 import LoginPage from './features/auth/LoginPage'
 import LogInteractionPage from './features/interaction/LogInteractionPage'
-
-function HCPsPage() {
-  return (
-    <div className="flex items-center justify-center h-full">
-      <div className="text-center">
-        <p className="text-slate-600 text-sm">HCP directory — coming in next sprint</p>
-      </div>
-    </div>
-  )
-}
+import HCPPage from './features/hcps/HCPPage'
 
 export default function App() {
   const dispatch = useDispatch()
@@ -34,7 +25,7 @@ export default function App() {
       }>
         <Route index element={<Navigate to="/log-interaction" replace />} />
         <Route path="log-interaction" element={<LogInteractionPage />} />
-        <Route path="hcps" element={<HCPsPage />} />
+        <Route path="hcps" element={<HCPPage />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

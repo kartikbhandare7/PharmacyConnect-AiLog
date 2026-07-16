@@ -60,3 +60,15 @@ async def search_samples(
         query = query.where(Sample.product_name.ilike(f"%{q}%"))
     result = await db.execute(query.order_by(Sample.product_name).limit(limit))
     return result.scalars().all()
+
+@router.get("/hcps", response_model=list[HCPSearchResult])
+async def get_all_hcps(
+    db: AsyncSession = Depends(get_db),
+):
+    result = await db.execute(
+        select(HCP)
+        .where(HCP.is_active == True)
+        .order_by(HCP.name)
+    )
+
+    return result.scalars().all()
