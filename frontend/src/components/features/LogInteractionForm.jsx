@@ -63,7 +63,7 @@ export default function LogInteractionForm() {
   )
 
   return (
-    <div className="h-full overflow-visible">
+    <div className="h-full overflow-y-auto">
       <div className="p-6 space-y-6 max-w-2xl mx-auto">
 
         {/* Page header */}
