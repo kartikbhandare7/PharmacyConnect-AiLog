@@ -12,6 +12,7 @@ from app.schemas.interaction import (
     ParsedInteractionData,
     FollowupSuggestionsOut,
 )
+from app.models.hcp import HCP
 from app.routers.deps import get_current_user
 from app.agent.graph import run_parse_agent, run_followup_agent
 
@@ -19,22 +20,36 @@ router = APIRouter(prefix="/interactions", tags=["interactions"])
 
 
 # ── POST /interactions/parse ──────────────────────────────────────────────────
+# @router.post("/parse", response_model=ParsedInteractionData)
 @router.post("/parse", response_model=ParsedInteractionData)
 async def parse_interaction(
     payload: ParseRequest,
+    db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user),
 ):
-    """
-    Accepts free-text from the chat panel.
-    Runs the LangGraph agent (parse → extract → compliance → suggest).
-    Returns structured data to pre-fill the Redux form state.
-    """
+
     result = await run_parse_agent(
         text=payload.text,
         session_id=payload.session_id,
         rep_id=str(current_user.id),
     )
+
+    # Search the HCP table using the extracted doctor name
+    if result.hcp_name:
+
+        db_result = await db.execute(
+            select(HCP).where(HCP.name.ilike(result.hcp_name))
+        )
+
+        hcp = db_result.scalar_one_or_none()
+
+        if hcp:
+            result.hcp_id = str(hcp.id)
+            result.specialty = hcp.specialty
+            result.hospital = hcp.hospital
+
     return result
+
 
 
 # ── POST /interactions ────────────────────────────────────────────────────────

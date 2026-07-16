@@ -13,19 +13,34 @@ class ParseRequest(BaseModel):
 
 
 class ParsedInteractionData(BaseModel):
-    """What the LangGraph agent returns after parsing free-text."""
-    hcp_name: Optional[str] = None
-    hcp_id: Optional[UUID] = None
-    interaction_type: Optional[str] = None
-    topics_discussed: Optional[str] = None
-    materials_mentioned: Optional[list[str]] = []
-    sentiment: Optional[SentimentEnum] = None
-    sentiment_confidence: Optional[float] = None
-    outcomes: Optional[str] = None
-    suggested_followups: Optional[list[str]] = []
+
+    hcp_id: str | None = None
+
+    hcp_name: str | None = None
+
+    specialty: str | None = None
+
+    hospital: str | None = None
+
+    interaction_type: str | None = None
+
+    topics_discussed: str | None = None
+
+    materials_mentioned: list[str] = []
+
+    sentiment: str | None = None
+
+    sentiment_confidence: float | None = None
+
+    outcomes: str | None = None
+
+    suggested_followups: list[str] = []
+
     clarification_needed: bool = False
-    clarification_question: Optional[str] = None
-    raw_extraction: Optional[dict[str, Any]] = None
+
+    clarification_question: str | None = None
+
+    raw_extraction: dict | None = None
 
 
 # ── Inbound: create interaction ───────────────────────────────────────────────

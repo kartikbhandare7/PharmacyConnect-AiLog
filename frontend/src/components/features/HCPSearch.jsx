@@ -79,7 +79,17 @@ export default function HCPSearch() {
       </div>
 
       {open && results.length > 0 && (
-        <div className="absolute z-50 w-full mt-2 rounded-xl glass-card border border-navy-500 shadow-glass overflow-hidden animate-slide-up">
+        <div
+  className="absolute left-0 right-0 top-full mt-2
+             z-[9999]
+             rounded-xl
+             glass-card
+             border border-navy-500
+             shadow-2xl
+             max-h-80
+             overflow-y-auto
+             animate-slide-up"
+>
           {results.map((hcp, i) => (
             <button key={hcp.id} onClick={() => select(hcp)}
               className="w-full flex items-center gap-3 px-4 py-3 hover:bg-indigo-500/10 transition-colors duration-150 text-left border-b border-navy-700 last:border-0"

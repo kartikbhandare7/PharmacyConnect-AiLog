@@ -1,5 +1,7 @@
 import json
 import re
+from sqlalchemy.ext.asyncio import AsyncSession
+from app.agent.hcp_lookup import find_hcp
 from langchain_groq import ChatGroq
 from app.core.config import settings
 from app.agent.state import HCPInteractionState
@@ -119,6 +121,22 @@ Now extract from the INPUT TEXT above. Return ONLY the JSON object, nothing else
 
     return state
 
+# new added
+async def lookup_hcp(
+    state: HCPInteractionState,
+    db: AsyncSession,
+):
+    hcp = await find_hcp(db, state.get("hcp_name"))
+
+    if hcp:
+        state["hcp_id"] = str(hcp.id)
+        state["hospital"] = hcp.hospital
+        state["specialty"] = hcp.specialty
+
+    else:
+        state["hcp_id"] = None
+
+    return state
 
 # ── Node 3: compliance_check ──────────────────────────────────────────────────
 async def compliance_check(state: HCPInteractionState) -> HCPInteractionState:

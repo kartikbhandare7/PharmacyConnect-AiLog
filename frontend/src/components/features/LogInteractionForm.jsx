@@ -63,7 +63,7 @@ export default function LogInteractionForm() {
   )
 
   return (
-    <div className="h-full overflow-y-auto">
+    <div className="h-full overflow-visible">
       <div className="p-6 space-y-6 max-w-2xl mx-auto">
 
         {/* Page header */}
@@ -86,10 +86,10 @@ export default function LogInteractionForm() {
         {/* HCP */}
         <div className="animate-stagger-2">
           <SectionHeader icon={<Users size={13} />} title="Healthcare Professional" />
-          <div className="space-y-1">
-            <label className="text-xs text-slate-500 font-medium">HCP Name *</label>
+          <div className="relative z-50 overflow-visible">
+            <label>HCP Name</label>
             <HCPSearch />
-          </div>
+        </div>
         </div>
 
         {/* Interaction details */}

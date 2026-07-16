@@ -47,7 +47,7 @@ except Exception:  # pragma: no cover - fallback for dev / lint environments
 from app.agent.state import HCPInteractionState
 from app.agent.nodes import parse_intent, extract_entities, compliance_check, generate_followups
 from app.schemas.interaction import ParsedInteractionData
-
+# from app.agent.hcp_lookup  import lookup_hcp;
 
 # ── Conditional edge: should we loop back or proceed? ─────────────────────────
 def route_after_compliance(state: HCPInteractionState) -> str:
@@ -124,6 +124,9 @@ async def run_parse_agent(text: str, session_id: str | None, rep_id: str) -> Par
 
     return ParsedInteractionData(
         hcp_name=final_state.get("hcp_name"),
+        hcp_id=final_state.get("hcp_id"),
+        specialty=final_state.get("specialty"),
+        hospital=final_state.get("hospital"),
         interaction_type=final_state.get("interaction_type"),
         topics_discussed=final_state.get("topics_discussed"),
         materials_mentioned=final_state.get("materials_mentioned", []),

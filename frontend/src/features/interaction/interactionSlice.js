@@ -33,6 +33,14 @@ export const submitInteraction = createAsyncThunk(
   'interaction/submit',
   async (_, { getState, rejectWithValue }) => {
     const form = getState().interaction.form
+    console.log("========== FORM ==========");
+    console.log(form);
+
+    console.log("========== HCP ==========");
+    console.log(form.hcp);
+
+    console.log("========== HCP ID ==========");
+    console.log(form.hcp?.id);
     try {
       const payload = {
         hcp_id: form.hcp.id,
@@ -54,8 +62,14 @@ export const submitInteraction = createAsyncThunk(
       localStorage.removeItem(DRAFT_KEY)
       return data
     } catch (err) {
-      return rejectWithValue(err.response?.data?.detail || 'Submission failed')
-    }
+        const detail = err.response?.data?.detail;
+
+        return rejectWithValue(
+          Array.isArray(detail)
+            ? detail.map((e) => e.msg).join(", ")
+            : detail || "Submission failed"
+        );
+      }
   }
 )
 
@@ -97,17 +111,43 @@ const interactionSlice = createSlice({
       state.form.aiSuggestedFollowups = state.form.aiSuggestedFollowups.filter((f) => f !== payload)
     },
     // Called by chat slice when AI parses text
-    prefillFromAI(state, { payload }) {
-      if (payload.hcp_name && !state.form.hcp)
-        state.form.hcp = { id: payload.hcp_id || null, name: payload.hcp_name, specialty: '', hospital: '' }
-      if (payload.interaction_type) state.form.interactionType = payload.interaction_type
-      if (payload.topics_discussed) state.form.topicsDiscussed = payload.topics_discussed
-      if (payload.sentiment) state.form.sentiment = payload.sentiment
-      if (payload.sentiment_confidence) state.form.sentimentConfidence = payload.sentiment_confidence
-      if (payload.outcomes) state.form.outcomes = payload.outcomes
-      if (payload.suggested_followups?.length) state.form.aiSuggestedFollowups = payload.suggested_followups
-      state.form.aiExtractedData = payload.raw_extraction
-    },
+prefillFromAI(state, { payload }) {
+
+  // If backend found the doctor in DB
+  if (payload.hcp_id) {
+    state.form.hcp = {
+      id: payload.hcp_id,
+      name: payload.hcp_name,
+      specialty: payload.specialty,
+      hospital: payload.hospital,
+    };
+  }
+
+  // Otherwise keep it unselected
+  else if (payload.hcp_name && !state.form.hcp) {
+    state.form.hcp = null;
+  }
+
+  if (payload.interaction_type)
+    state.form.interactionType = payload.interaction_type;
+
+  if (payload.topics_discussed)
+    state.form.topicsDiscussed = payload.topics_discussed;
+
+  if (payload.sentiment)
+    state.form.sentiment = payload.sentiment;
+
+  if (payload.sentiment_confidence)
+    state.form.sentimentConfidence = payload.sentiment_confidence;
+
+  if (payload.outcomes)
+    state.form.outcomes = payload.outcomes;
+
+  if (payload.suggested_followups?.length)
+    state.form.aiSuggestedFollowups = payload.suggested_followups;
+
+  state.form.aiExtractedData = payload.raw_extraction;
+},
     saveDraft(state) {
       localStorage.setItem(DRAFT_KEY, JSON.stringify(state.form))
       state.draftSavedAt = new Date().toISOString()
