@@ -3,9 +3,9 @@ import AIChatPanel from '../../components/features/AIChatPanel'
 
 export default function LogInteractionPage() {
   return (
-    <div className="flex h-full overflow-hidden">
+    <div className="flex h-full overflow-visible ">
       {/* Left: scrollable form panel */}
-      <div className="flex-1 overflow-hidden border-r border-navy-700">
+      <div className="flex-1 overflow-visible border-r border-navy-700">
         <LogInteractionForm />
       </div>
 

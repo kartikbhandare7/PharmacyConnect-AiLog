@@ -94,10 +94,10 @@ export default function AIChatPanel() {
               <div className="absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full bg-emerald-500 border-2 border-navy-800 animate-pulse" />
             </div>
             <div>
-              <p className="text-sm font-semibold text-white">AI Assistant</p>
+              <p className="text-sm font-semibold text-white">Kartik AI Assistant</p>
               <p className="text-xs text-emerald-400 flex items-center gap-1">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block" />
-                gemma2-9b-it · LangGraph
+                Online
               </p>
             </div>
           </div>

@@ -13,30 +13,25 @@ router = APIRouter(tags=["hcps"])
 
 @router.get("/hcps/search", response_model=list[HCPSearchResult])
 async def search_hcps(
-    q: str = Query(..., min_length=2, description="Search term — min 2 characters"),
-    limit: int = Query(10, le=20),
+    q: str = Query("", description="Filter by name, specialty, or hospital"),
+    limit: int = Query(20, le=50),
     db: AsyncSession = Depends(get_db),
     _: User = Depends(get_current_user),
 ):
-    """
-    Full-text autocomplete on HCP name, specialty, and hospital.
-    Uses PostgreSQL ILIKE for case-insensitive partial matching.
-    """
-    pattern = f"%{q}%"
-    result = await db.execute(
-        select(HCP)
-        .where(
-            HCP.is_active == True,
+    query = select(HCP).where(HCP.is_active == True)
+    if q:
+        pattern = f"%{q}%"
+        query = query.where(
             or_(
                 HCP.name.ilike(pattern),
                 HCP.specialty.ilike(pattern),
                 HCP.hospital.ilike(pattern),
-            ),
+            )
         )
-        .order_by(HCP.name)
-        .limit(limit)
-    )
+    result = await db.execute(query.order_by(HCP.name).limit(limit))
     return result.scalars().all()
+
+
 
 
 @router.get("/materials/search", response_model=list[MaterialOut])

@@ -19,7 +19,7 @@ export default function AppLayout() {
   }
 
   return (
-    <div className="flex h-screen overflow-hidden">
+    <div className="flex h-screen overflow-visible">
       {/* Sidebar */}
       <aside className="shrink-0 w-56 flex flex-col glass-card border-r border-navy-600/50 bg-navy-900/80">
         {/* Logo */}
@@ -71,7 +71,7 @@ export default function AppLayout() {
       </aside>
 
       {/* Main content */}
-      <main className="flex-1 overflow-hidden">
+      <main className="flex-1 overflow-visible">
         <Outlet />
       </main>
     </div>
