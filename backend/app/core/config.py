@@ -22,7 +22,7 @@ class Settings(BaseSettings):
     DEBUG: bool = False
     CORS_ORIGINS: list[str] = [
         "http://localhost:3000",
-        "http://localhost:5173",
+        "https://pharmacyconnect-ailog-1.onrender.com",
     ]
 
     model_config = SettingsConfigDict(

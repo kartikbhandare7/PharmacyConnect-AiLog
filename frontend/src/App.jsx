@@ -1,27 +1,25 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
-import { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
-import { fetchMe } from './features/auth/authSlice'
+// import { useEffect } from 'react'
+// import { useDispatch } from 'react-redux'
+// import { fetchMe } from './features/auth/authSlice'
 import AppLayout from './components/layout/AppLayout'
 import ProtectedRoute from './components/ui/ProtectedRoute'
-import LoginPage from './features/auth/LoginPage'
+// import LoginPage from './features/auth/LoginPage'
 import LogInteractionPage from './features/interaction/LogInteractionPage'
 import HCPPage from './features/hcps/HCPPage'
 
 export default function App() {
-  const dispatch = useDispatch()
+  // const dispatch = useDispatch()
 
-  useEffect(() => {
-    if (localStorage.getItem('access_token')) dispatch(fetchMe())
-  }, [dispatch])
+  // useEffect(() => {
+  //   if (localStorage.getItem('access_token')) dispatch(fetchMe())
+  // }, [dispatch])
 
   return (
     <Routes>
-      <Route path="/login" element={<LoginPage />} />
+      {/* <Route path="/login" element={<LoginPage />} /> */}
       <Route path="/" element={
-        <ProtectedRoute>
           <AppLayout />
-        </ProtectedRoute>
       }>
         <Route index element={<Navigate to="/log-interaction" replace />} />
         <Route path="log-interaction" element={<LogInteractionPage />} />

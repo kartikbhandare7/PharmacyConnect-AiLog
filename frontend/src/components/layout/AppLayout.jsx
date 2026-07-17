@@ -13,10 +13,10 @@ export default function AppLayout() {
   const navigate = useNavigate()
   const user = useSelector((s) => s.auth.user)
 
-  const handleLogout = () => {
-    dispatch(logout())
-    navigate('/login')
-  }
+  // const handleLogout = () => {
+  //   dispatch(logout())
+  //   navigate('/login')
+  // }
 
   return (
     <div className="flex h-screen overflow-visible">
@@ -63,10 +63,10 @@ export default function AppLayout() {
               <p className="text-xs text-slate-600 truncate">{user?.role || 'rep'}</p>
             </div>
           </div>
-          <button onClick={handleLogout}
+          {/* <button onClick={handleLogout}
             className="flex items-center gap-2 w-full px-3 py-2 rounded-xl text-xs text-slate-600 hover:text-red-400 hover:bg-red-500/8 transition-all duration-200">
             <LogOut size={13} /> Sign out
-          </button>
+          </button> */}
         </div>
       </aside>
 

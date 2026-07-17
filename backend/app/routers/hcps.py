@@ -16,7 +16,7 @@ async def search_hcps(
     q: str = Query("", description="Filter by name, specialty, or hospital"),
     limit: int = Query(20, le=50),
     db: AsyncSession = Depends(get_db),
-    _: User = Depends(get_current_user),
+    # _: User = Depends(get_current_user),
 ):
     query = select(HCP).where(HCP.is_active == True)
     if q:
@@ -39,7 +39,7 @@ async def search_materials(
     q: str = Query("", description="Filter by name"),
     limit: int = Query(20, le=50),
     db: AsyncSession = Depends(get_db),
-    _: User = Depends(get_current_user),
+    # _: User = Depends(get_current_user),
 ):
     query = select(Material).where(Material.is_active == True)
     if q:
@@ -53,7 +53,7 @@ async def search_samples(
     q: str = Query("", description="Filter by product name"),
     limit: int = Query(20, le=50),
     db: AsyncSession = Depends(get_db),
-    _: User = Depends(get_current_user),
+    # _: User = Depends(get_current_user),
 ):
     query = select(Sample).where(Sample.is_active == True)
     if q:
